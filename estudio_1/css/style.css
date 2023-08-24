@@ -1,0 +1,27 @@
+div{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.style_div{
+    width: 50%;
+    background-color: aqua;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.style_div h2{
+    font-family: fantasy;
+    font-weight: bolder;
+    font-size: 2rem;
+    padding: 0%;
+    margin: 0%;
+}
+
+.style_div p{
+    font-size: 1.2rem;
+    font-weight:bolder;
+}
