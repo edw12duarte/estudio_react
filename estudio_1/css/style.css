@@ -25,3 +25,34 @@ div{
     font-size: 1.2rem;
     font-weight:bolder;
 }
+
+/*============================================================*/
+.contenedor_imagenes{
+    flex-direction: row;
+    justify-content: center;
+}
+
+.contenedor_imagenes .Cont_img_child,
+.contenedor_imagenes .Cont_img_parent{
+    display: block;
+    width: 40%;
+    border: 2px solid black;
+}
+
+.contenedor_imagenes img{
+    width: 300px;
+    height: 300px;
+}
+
+.resultado_componente_anidado{
+    width: 80%;
+    border: 2px solid black;
+}
+
+.resultado_componente_anidado .cont_result{
+    border-radius: 10px;
+    width: 80%;
+    border: 10px dashed rgb(41, 2, 65);
+    margin: 5px;
+}
+
