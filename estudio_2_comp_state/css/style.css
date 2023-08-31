@@ -1,0 +1,50 @@
+
+div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo_principal{
+    color: red;
+    font-size: 5rem;
+    font-weight: bolder;
+    font-style: italic;
+    margin: 0;
+}
+
+img{
+    border: 1px solid black;
+    margin: 2px;
+}
+
+
+/*=======================================================*/
+
+.text_import{
+    font-weight: bolder;
+    color: darkblue;
+}
+
+#cont_cambio_state{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+}
+
+#cont_cambio_state .cont_hacer{
+    width: 40%;
+    height: auto;
+}
+
+/*=====================================================*/
+
+.title_count{
+    color: green;
+    font-size: 2rem;
+    font-weight: bolder;
+    font-style: italic;
+    font-family: fantasy;
+    margin: 0;
+}

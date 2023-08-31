@@ -6,6 +6,13 @@ div{
     align-items: center;
 }
 
+.titulo_principal{
+    color: red;
+    font-size: 5rem;
+    font-weight: bolder;
+    font-style: italic;
+}
+
 .style_div{
     width: 50%;
     background-color: aqua;
