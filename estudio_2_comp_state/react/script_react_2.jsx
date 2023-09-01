@@ -91,7 +91,7 @@ class State_con_JS extends React.Component{
                 </p>
                 <br />
                 <strong>Ejemplo</strong>
-                <div style={{flexDirection:"row"}}>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
                     <img src="../sources/ejemplo_state_con_JS.png" style={{width:"400px", height:"400px"}} />
                     <img src="../sources/resultado_state_JS.png" />
                 </div>
@@ -151,7 +151,7 @@ class Establecer_state extends React.Component{
                     <strong>En otras palabras, dentro de una funcion, se llama <span style={{color:"purple"}}>setState()</span> y se usa para cambiar el state del componente</strong>
                 </p>
                 <p>Ejemplo</p>
-                <div style={{flexDirection:"row"}}>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
                     <div>
                         <label>Codigo de ejemplo</label>
                         <img src="../sources/ejemplo_setState.png" style={{width:"500px", height:"400px"}}/>
@@ -323,17 +323,202 @@ class Contador extends React.Component{
     
 }
 
-
 class Mostrar_contador extends React.Component{
 
     render(){
         return(
             <>
-                <h1 className="title_count">Contador</h1>
-                <Contador valor={1}/>
+                <div >
+                    <h1 className="title_count">Contador</h1>
+                    <Contador valor={1}/>
+                </div>
+                <h3>Codigo</h3>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <img src="../sources/cod_contador_1.png" style={{height:"450px", width:"375px"}}/>
+                    <img src="../sources/cod_contador_2.png" style={{height:"auto", width:"375px"}} />
+                </div>
             </>
         );
     }
 }
 
 ReactDOM.render(<Mostrar_contador/>, container_count)
+
+//=====================================================================================
+
+//Crear una entrada (input) controlada
+
+const container_entrada = document.getElementById("container_entrada");
+
+
+class Formato_control extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            texto :""
+        }
+    this.Actualizar_texto = this.Actualizar_texto.bind(this);
+    }
+
+    Actualizar_texto(event){
+        this.setState({
+            texto: event.target.value
+        });
+    }
+
+    render(){
+        return(
+            <div>
+                <h3>Resultado</h3>
+                <input type="text" value={this.state.texto} onChange={this.Actualizar_texto} placeholder="Introduzaca texto" style={{background:"#B4C5C5"}}/>
+                <br /><br />
+                <h4 style={{margin:0}}>Aqui se actualizara el texto:</h4>
+                <p style={{marginBottom:"30px", fontSize:"1.5rem"}}>{this.state.texto}</p>
+            </div>
+        );
+    }
+}
+
+class Mostrar_formato extends React.Component{
+
+    render(){
+        return(
+            <>
+                <h1>Crear una entrada (input) controlada</h1>
+                <strong>Tener en cuenta esta informacion de los eventos en react</strong>
+                <ul>
+                    <li>
+                        <p>
+                            <strong>event:</strong> En este caso, event se refiere a un objeto de evento. Cuando ocurre un evento, como escribir algo en un campo de entrada "imput", <br />
+                            React crea un objeto de evento que contiene información sobre ese evento en particular. Este objeto tiene muchas propiedades y métodos que proporcionan detalles sobre el evento. <br />
+                            En este contexto, event contiene información sobre el evento que desencadenó la función 
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>event.target:</strong> Aquí, target se refiere al elemento HTML en el que ocurrió el evento. Por ejemplo, si tienes un campo de entrada "input" y se escriben caracteres en él, <br />
+                            el elemento "input" es el "objetivo" de ese evento. event.target es una referencia a este elemento HTML.
+                        </p>
+                    </li>
+                </ul>
+                <div style={{flexDirection:"row", justifyContent:"space-around", alignItems:"flex-start"}}>
+                    <div>
+                        <h3>Codigo</h3>
+                        <img srcSet="../sources/cod_format_control_react.png" style={{width:"500px", height:"auto"}} />
+                    </div>
+                    < Formato_control/>
+                </div>
+                </>
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_formato/>, container_entrada);
+
+//=========================================================================================
+
+
+//Crear una entrada (input) controlada con un Boton (submit)
+
+const container_entrada_submit = document.getElementById("container_entrada_submit");
+
+class Formato_submit extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            input:"",
+            submit:""
+        }
+        this.cambiar_texto  = this.cambiar_texto.bind(this);
+        this.capturar_texto = this.capturar_texto.bind(this);
+    }
+
+    capturar_texto(event){
+        this.setState({
+            input: event.target.value
+        })
+    }
+
+    cambiar_texto(event){
+        event.preventDefault();
+        this.setState({
+            submit: this.state.input
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                <form onSubmit={this.cambiar_texto}>
+                    <input type="text" onChange={this.capturar_texto} placeholder="Introduzca texto" />
+                    <button>Submit!</button>
+                </form>
+                <p>
+                    Aqui se muestra el texto:
+                    <span style={{color:"green", fontSize:"1.5rem", fontStyle:"oblique"}}> {this.state.submit}</span>
+                </p>
+            </div>
+        );
+    }
+}
+
+class Mostrar_Formato_submit extends React.Component{
+    render(){
+        return(
+            <div style={{padding:"0 20px"}}>
+                <h1>Crear una entrada (input) controlada con un Boton (submit)</h1>
+                <section style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div style={{textAlign:"left",width:"50%"}}>
+                        <p>Tener en cuenta los atributos de eventos de los formularios</p>
+                        <ul>
+                            <li>onSubmit: Se activa cuando se envía el formulario. Puedes utilizarlo para validar los datos antes de enviar el formulario al servidor.</li>
+                            <li>onReset: Se activa cuando se restablece el formulario a sus valores predeterminados.</li>
+                            <li>onChange: Se activa cuando cambia el valor de un elemento del formulario, como un campo de entrada.</li>
+                            <li>onFocus: Se activa cuando un elemento del formulario obtiene el foco, es decir, cuando se hace clic en él o se navega a él.</li>
+                            <li>onBlur: Se activa cuando un elemento del formulario pierde el foco, es decir, cuando el usuario deja de interactuar con él.</li>
+                            <li>onInput: Se activa cuando se introduce un valor en un elemento del formulario. Similar a onChange, pero puede funcionar en tiempo real.</li>
+                            <li>onClick: Se activa cuando se hace clic en un elemento del formulario, como un botón.</li>
+                            <li>onKeyDown, onKeyPress, onKeyUp: Estos se activan cuando se presionan, presionan y sueltan una tecla, respectivamente, mientras un elemento del formulario está en foco.</li>
+                            <li>onMouseDown, onMouseUp: Se activan cuando se presiona y se suelta un botón del mouse sobre un elemento del formulario.</li>
+                            <li>onSelect: Se activa cuando se selecciona un texto en un campo de entrada.</li>
+                        </ul>
+                    </div>
+                    <div style={{flexDirection:"column", width:"50%"}}>
+                        <div>
+                            <h3>Resultado</h3>
+                            <Formato_submit/>
+                        </div>
+                        <h3>Codigo</h3>
+                        <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                            <img src="../sources/cod_formato_submit_1.png" style={{width:"50%", height:"auto"}} />
+                            <img src="../sources/cod_formato_submit_2.png" style={{width:"50%", height:"auto"}} />
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_Formato_submit/>, container_entrada_submit);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
