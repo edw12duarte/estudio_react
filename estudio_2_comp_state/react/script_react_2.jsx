@@ -503,21 +503,346 @@ class Mostrar_Formato_submit extends React.Component{
 ReactDOM.render(<Mostrar_Formato_submit/>, container_entrada_submit);
 
 
+//==========================================================================================================================
+
+//Pasar estados (state) de un elemento padrea un elemento hijo como accesorios
+
+const container_6 = document.getElementById("container_6");
+
+class Elemento_padre extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            name_main: "Edwin"
+        }
+    }
+
+    render(){
+        return(
+            <div style={{border:"1px solid blue", width:"100%"}}>
+                <h4>Soy ele Elemento_padre</h4>
+                <Elemento_hijo name_main={this.state.name_main}/>
+            </div>
+        );
+    }
+
+}
+
+class Elemento_hijo extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        return(
+            <div style={{width:"100%", backgroundColor:"#B0BACD"}}>
+                <h4>Soy el Elemento hijo</h4>
+                <h3 style={{color:"green", fontWeight:"bolder"}}>
+                    {this.props.name_main}
+                </h3>
+            </div>
+        );
+    }
+}
 
 
 
+class Mostrar_pasar_state extends React.Component{
+    constructor(props){
+        super(props)
+    }
+    
+    render(){
+        return(
+            <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                <div style={{ width:"50%"}}>
+                    <h1>5. Pasar estados (state) de un elemento padre a un elemento hijo como Accesorios</h1>
+                    <p>
+                        Un patrón común es tener un componente con "state" que contenga lo importante para su aplicación, <br />
+                        que luego se representaran en los componentes secundarios. <br />
+                        Quiere que estos componentes secundarios accedan a algunas partes del state, enonces, estos "states" se pasaran como accesorios.
+                    </p>
+                    <strong>Ejemplo</strong>
+                    <dd>
+                        <p>
+                            Por ejemplo, tal vez tenga un componente "App", dentro hay un  "Navbar", entre otros componentes. <br />
+                            En "App", tiene "state" con una gran cantidad de información del usuario, pero solo "Navbar" necesita acceso al nombre de usuario <br />
+                            del usuario para poder mostrarlo. Pasas esa pieza del "state" al "Navbar"como un accesorio.
+                        </p>
+                    </dd>
+                    <h2>
+                        <strong>Paradigma importante React</strong>
+                    </h2>
+                    <p>
+                        Algunos paradigamas importantes a la hora de  utilizar react son:
+                    </p>
+                    <ol>
+                        <li>
+                            <strong>
+                                flujo de datos unidireccional
+                            </strong>
+                            <p>
+                                El estado fluye en una dirección hacia abajo en el árbol de componentes de su aplicación, desde el componente principal con estado hasta los componentes secundarios. <br />
+                                Los componentes secundarios solo reciben los datos de estado que necesitan.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>
+                                Aplicaciones complejas se dividen en pocos componentes con estado
+                            </strong>
+                            <p>
+                            El resto de sus componentes simplemente reciben el estado del padre como accesorios y representan una interfaz de usuario desde ese estado.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Separar logica del "State" y la logica de la interfaz</strong>
+                            <p>
+                                Crear una separación donde la gestión del estado se maneja en una parte del código y la representación de la interfaz de usuario en otra.
+                            </p>
+                            <p>
+                            Este principio de separar la lógica de estado de la lógica de la interfaz de usuario es uno de los principios clave de React. <br />
+                            Cuando se usa correctamente, hace que el diseño de aplicaciones complejas y con estado sea mucho más fácil de administrar.
+                            </p>
+                        </li>
+                    </ol>
+                </div>
+                <div style={{ width:"50%"}}>
+                    <h2>Ejemplo de pasar "states" como accesorios</h2>
+                    <Elemento_padre/>
+                    <p>El Elemento_padre tiene el state: name con el valor "Edwin" y se lo pasa al Elemento_hijo como accesorio</p>
+                    <h2>Codigo</h2>
+                    <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                        <img src="../sources/ejemplo_elemento_padre_pasar_state.png" style={{width:"50%", height:"400px"}} />
+                        <img src="../sources/ejemplo_elemento_hijo_pasar_state.png" style={{width:"50%", height:"400px"}} />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_pasar_state/>, container_6);
 
 
+//=================================================================================================
+
+// Pasar funciones como accesorios
+
+const container_7 = document.getElementById("container_7");
 
 
+class Mostrar_pasar_funciones extends React.Component{
+    
+    render(){
+        return(
+            <>
+                <h1>
+                    6. Pasar funciones como accesorios
+                </h1>
+                <p>
+                    Puede pasar "state" accesorios a componentes secundarios, pero no está limitado a pasar datos. También puede pasar funciones de controlador o cualquier método definido en un componente de React a un componente secundario. Así es como permite que los componentes secundarios interactúen con sus componentes principales
+                </p>
+                <div style={{width:"100%"}}>
+                    <Componente_padre/>
+                </div>
+                <ul>
+                    <li>
+                        El componenten padre tiene los "state" y "funciones"
+                    </li>
+                    <li>
+                        El componente "GetInput" recibe como accesorios una "handlefunction" del componente padre, ademas recibe "state.input" para modificar su valor
+                    </li>
+                    <li>
+                        El componenete "InputRender" recibe como accesorio  "state.input" para mostrarlo
+                    </li>
+                </ul>
+                <dd>
+                    <p>
+                        En conclusion cada componente tiene un tara especifica <br />
+                        <strong>GetImput</strong>: Recibe la informacion y modifica el state <br />
+                        <strong>ImputRender</strong>: Recibe la informacion del state y la muestra
+                    </p>
+                </dd>
+                <p>
+                    Esto es muy parecido a "Crear una entrada (input) controlada", sin embargo aqui se separa la logica de "modificar el state" y la "interfaz"
+                </p>
+                <div style={{flexDirection:"row"}}>
+                    <img src="../sources/pasar_funciones_elemento_padre.png" style={{width:"33%", height:"300px"}}/>
+                    <img src="../sources/pasar_funciones_elemento_GetInput.png" style={{width:"33%", height:"300px"}}/>
+                    <img src="../sources/pasar_funciones_elemento_RenderInput.png" style={{width:"33%", height:"300px"}}/>
+                </div>
+            </>
+        );
+    }
+}
 
+class Componente_padre extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        inputValue: ''
+        }
+        this.handleChange = this.handleChange.bind(this);
+    }
+    handleChange(event) {
+        this.setState({
+            inputValue: event.target.value
+        });
+    }
 
+    render() {
+        return (
+            <div style={{border:"3px solid aquamarine", width:"80%", margin:"auto"}}>
+                <h3>Soy el componente padre</h3>
+                <div style={{flexDirection:"row", justifyContent:"space-around", width:"100%"}}>
+                    <GetInput input={this.state.inputValue} handleChange={this.handleChange}/>
+                    <RenderInput input={this.state.inputValue}/>
+                </div>
+            </div>
+        );
+    }
+};
 
+class GetInput extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <div>
+                <h3>Get Input:</h3>
+                <input value={this.props.input} onChange={this.props.handleChange}/>
+            </div>
+        );
+    }
+};
 
+class RenderInput extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <div>
+                <h3>Input Render:</h3>
+                <p>{this.props.input}</p>
+            </div>
+        );
+    }
+};
 
+ReactDOM.render(<Mostrar_pasar_funciones/>, container_7);
 
+//===================================================================================
 
+//metodos del ciclo de vida de React
 
+const container_8 = document.getElementById("container_8");
+
+class Mostrar_components_lifeCicle extends React.Component{
+    render(){
+        return(
+            <>
+                <h1>
+                        7. Metodos del ciclo de vida de React
+                </h1>
+                <div style={{width:"80%", margin:"auto"}}>
+                    <p>
+                        Los componentes de React tienen varios métodos especiales que brindan oportunidades para realizar acciones en puntos específicos del ciclo de vida de un componente. Estos se denominan métodos de ciclo de vida o ganchos de ciclo de vida y le permiten capturar componentes en determinados momentos. Esto puede ser antes de que se procesen, antes de que se actualicen, antes de que reciban accesorios, antes de que se desmonten, etc. Aqui algubos de los metodos principales:
+                    </p>
+                    <ul>
+                        <li>componentWillMount() (creo que este este metodo ya no esta disponible)</li>
+                        <li>componentDidMount()</li>
+                        <li>shouldComponentUpdate()</li>
+                        <li>componentDidUpdate()</li>
+                        <li>componentWillUnmount()</li>
+                    </ul>
+                </div>
+                
+            </>
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_components_lifeCicle/>,container_8);
+
+//=====================================================================================
+
+// Metodo del componente Will Mount
+
+const container_8_1 = document.getElementById("container_8_1");
+
+class Metodo_willMount extends React.Component{
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1>7.1 Metodo de componentWillMount</h1>
+                <p>El componentWillMount se ejecuta antes de renderizar el componente</p>
+                <img src="../sources/componentWillMount.png" alt="" />
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Metodo_willMount/>, container_8_1);
+
+//==========================================================================================
+
+// Metodo del componente Will Mount
+
+const container_8_2 = document.getElementById("container_8_2");
+
+class Metodo_didMount extends React.Component{
+
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1>7.2 Metodo de componentDidMount</h1>
+                <p>
+                    La mayoría de los desarrolladores web, en algún momento, necesitan llamar a un endpoint API para recuperar datos. Si está trabajando con React, es importante saber dónde realizar esta acción.
+                </p>
+                <div style={{flexDirection:"row"}}>
+                    <img src="../sources/ejemplo_didMount.png" style={{width:"500px"}} />
+                    <Ejemplo_didMount/>
+                </div>
+                <p>
+                    La mejor práctica con React es realizar llamadas API o cualquier llamada a su servidor en el método del ciclo de vida componentDidMount(). Este método se llama después de montar un componente en el DOM. Cualquier llamada setState() aquí activará una nueva representación de su componente. Cuando llama a una API en este método y establece su estado con los datos que devuelve la API, se activará automáticamente una actualización una vez que reciba los datos.
+                </p>
+                <img src="" alt="" />
+            </div>
+        );
+    }
+}
+
+class Ejemplo_didMount extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            activateUser: null
+        }
+    }
+
+    componentDidMount(){
+        setTimeout(()=>{
+            this.setState({
+                activateUser: 1998
+            });
+        }, 5000);
+    }
+    
+    render(){
+        return(
+            <div>
+                <h1>
+                    Usuario activo: {this.state.activateUser}
+                </h1>
+                <h6>Espere 5 segundos la respuesta del servidor</h6>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Metodo_didMount/>, container_8_1);
 
 
 
