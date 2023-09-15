@@ -164,11 +164,23 @@ class Establecer_state extends React.Component{
                 <br />
                 <h2>3.1 Vincular metodo (del evento) a la clase</h2>
                 <p>
-                    Un método de clase normalmente necesita usar la "this" (palabra clave) para poder acceder a las propiedades de la clase (como "state" y "props"). <br />
-                    Para vincular el metodo a la clase y que este pueda modificar los datos del "Componente React", se hace de la siguiente manera:
+                    Éxiste 2 maneras para hacer que un metodo sea utilizable dentro de un elemento de React:
                 </p>
-                <img src="../sources/vincular_metodo_componente.png" alt="" />
-                <p> De esta manera podra utilizar setState o cambiar los props.</p>
+                <div style={{flexDirection:"row", backgroundColor:"#FE6F61", alignItems:"flex-start"}}>
+                    <div>
+                        <h3>Manera 1: con this</h3>
+                        <p>
+                            Creando el metodo y luego definiendolo en el constructor como se ve en la imagen:
+                        </p>
+                        <img src="../sources/vincular_metodo_componente.png" alt="" />
+                        <p> De esta manera podra utilizar setState o cambiar los props.</p>
+                    </div>
+                    <div>
+                        <h3>Manera 2: Funcion flecha en una variable</h3>
+                        <p>De esta manera solo se guarda la funcion flecha en una variable y cuando se desee usar se llama "this.nombreFuncion"</p>
+                        <img src="../sources/manera_2_metodo_react.png" alt="" />
+                    </div>
+                </div>
             </div>
         )
         
@@ -788,7 +800,7 @@ ReactDOM.render(<Metodo_willMount/>, container_8_1);
 
 //==========================================================================================
 
-// Metodo del componente Will Mount
+// Metodo del componente Did Mount
 
 const container_8_2 = document.getElementById("container_8_2");
 
@@ -808,7 +820,6 @@ class Metodo_didMount extends React.Component{
                 <p>
                     La mejor práctica con React es realizar llamadas API o cualquier llamada a su servidor en el método del ciclo de vida componentDidMount(). Este método se llama después de montar un componente en el DOM. Cualquier llamada setState() aquí activará una nueva representación de su componente. Cuando llama a una API en este método y establece su estado con los datos que devuelve la API, se activará automáticamente una actualización una vez que reciba los datos.
                 </p>
-                <img src="" alt="" />
             </div>
         );
     }
@@ -842,7 +853,771 @@ class Ejemplo_didMount extends React.Component{
     }
 }
 
-ReactDOM.render(<Metodo_didMount/>, container_8_1);
+ReactDOM.render(<Metodo_didMount/>, container_8_2);
+
+
+//===========================================================================================
+//  Ejemplo de listener(oyente) con DidMount
+
+const container_listener = document.getElementById("container_listener")
+
+class Mostrar_listener extends React.Component{
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1 style={{color:"green"}}>Ejemplo de evento con addEventListener()</h1>
+                <p> 
+                    React proporciona un sistema de eventos sintético que envuelve el sistema de eventos nativo presente en los navegadores. Esto significa que el sistema de eventos sintéticos se comporta exactamente igual independientemente del navegador del usuario.
+                </p>
+                <p>
+                    Ya has estado usando algunos de estos controladores de eventos sintéticos, como onClick(). El sistema de eventos sintéticos de React es excelente para usar en la mayoría de las interacciones que administrará en elementos DOM. Sin embargo, si desea adjuntar un controlador de eventos al documento o a los objetos de la ventana, debe hacerlo directamente.
+                </p>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div style={{flexDirection:"column", width:"50%"}}>
+                        <img src="../sources/ejemplo_listener_parte_1.png" style={{width:"100%", height:"400px"}} />
+                        <img src="../sources/ejemplo_listener_parte_2.png" style={{width:"100%", height:"200px"}} />
+                    </div>
+                    <Ejemplo_listener/>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+class Ejemplo_listener extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            message_num:"",
+            message_letter:"presiona una tecla"
+        }
+    }
+
+    componentDidMount(){
+        //Ejemplo 1: mostrar tecla oprimida
+        document.addEventListener("keydown", (event)=>{
+            this.setState({
+                message_letter: event.key
+            })
+        })
+
+        //Ejemplo 2: Mostrar numero al azar haciendo un click
+        document.getElementById("click_me").addEventListener("click", ()=>{
+            let num_random = Math.floor(Math.random()*100);
+            this.setState({
+                message_num: num_random
+            });
+        })
+    }
+    componentWillUnmount(){
+        document.removeEventListener("click")
+    }
+
+    render(){
+        return(
+            <div style={{width:"50%",justifyContent:"center"}}>
+                <h3>Tu letra es: {this.state.message_letter}</h3>
+                <h3>Tu numero es: {this.state.message_num} </h3>
+                <div id="click_me" style={{width:"100px", height:"100px", backgroundColor:"aquamarine", cursor:"pointer"}}>
+                    <p>Haz click aqui</p>
+                </div>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_listener/>, container_listener);
+
+//=======================================================================================
+// 7.3 del metodo shouldComponentUpdate
+
+const container_8_3 = document.getElementById("container_8_3");
+
+class Mostrar_SCU extends React.Component{
+
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}> 
+                <h2>7.3 Ejemplo de shouldComponentUpdate(): optimizar Renderizado</h2>
+                <ul>
+                    <li>
+                        React proporciona un método de ciclo de vida al que puede llamar cuando los componentes secundarios reciben nuevos "state" o "props"y declarar específicamente si los componentes deben actualizarse o no. El método es shouldComponentUpdate(), y toma "nextProps" y "nextState" como parámetros
+                    </li>
+                    <li>
+                        Puede utilizar shouldComponentUpdate() para evitar esto comparando el archivo props. El método debe devolver un boolean valor que le indique a React si actualizar o no el componente. Puede comparar los accesorios actuales ( this.props) con los siguientes accesorios ( nextProps) para determinar si necesita actualizar o no, y regresar "true" o "false" en consecuencia.
+                    </li>
+                </ul>
+                <h3>Codigo</h3>
+                <div style={{flexDirection:"row"}}>
+                    <div style={{flexDirection:"row"}}>
+                        <img src="../sources/ejemplo_shouldComponentUpdate_1.png" style={{width:"auto", height:"300px"}} />
+                        <img src="../sources/ejemplo_shouldComponentUpdate_2.png" style={{width:"auto", height:"300px"}} />
+                    </div>
+                    <div>
+                        <h3>Ejemplo: Renderizar solo cuando el numero es "PAR"</h3>
+                        <Controller/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class OnlyEvens extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    //Dice si DEJA o NO renderizar el componente
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('Should I update?');
+        if(nextProps.value %2 == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    componentDidUpdate() {
+        console.log('Component re-rendered.');
+    }
+    render() {
+        return <h1>{this.props.value}</h1>;
+    }
+}
+
+class Controller extends React.Component {
+    constructor(props) {
+    super(props);
+    this.state = {
+        value: 0
+    };
+    this.addValue = this.addValue.bind(this);
+    }
+    addValue() {
+        this.setState(state => ({
+            value: state.value + 1
+        }));
+    }
+    render() {
+        return (
+            <div>
+                <button onClick={this.addValue}>Add</button>
+                <OnlyEvens value={this.state.value} />
+            </div>
+        );
+    }
+}
+
+
+ReactDOM.render(<Mostrar_SCU/>,container_8_3);
+
+//=====================================================================================
+
+// Styles en React
+
+const container_9 = document.getElementById("container_9");
+
+class Style_React extends React.Component{
+    render(){
+        return(
+            <div>
+                <h1> 8. Styles en React</h1>
+                <ul>
+                    <li>
+                        En react tambien cambia la sintaxys de las propiedades de "css", ejemplo: "font-size == fontSize" (Cambia la notacion kebab-case a Camel-case)
+                    </li>
+                    <br />
+                    <li>
+                        Se pasa los estilos como un "object" 
+                        <img src="../sources/ejemplo_styles_react.png" style={{height:"25px", width:"360px", margin:"-4px 0px"}} />
+                    </li>
+                    <li>
+                        Para ordenar mejor el codigo, se puede declarar los "style" en una constante y utlizarla cuando se necesite
+                        <img src="../sources/ejemplo_styles_react_1.png" style={{height:"50px", width:"170px", margin:"-25px 0px"}} />
+                    </li>
+                </ul>
+                <Styles_dinamicos/>
+            </div>
+        );
+    }
+}
+
+
+class Styles_dinamicos extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            input:""
+        }
+    }
+
+    actualizarEntrada =(event)=>{
+        this.setState({
+            input: event.target.value
+        })
+    }
+
+    render(){
+        let style_input={}
+
+        if(this.state.input.length < 10){
+            style_input.border = "1px solid black";
+            style_input.backgroundColor = "#8CE78C";
+        }else{
+            style_input.border = "3px solid red";
+            style_input.backgroundColor = "#FFAA33";
+        }
+
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h2>8.1 Cambiar CSS en condicionalmente según el estado del componente</h2>
+                <p>
+                    También puede renderizar CSS condicionalmente según el estado de un componente de React. Para hacer esto, verifica una condición y, si esa condición se cumple, modifica el objeto de los estilos asignado "style" de JSX .
+                </p>
+                <div>
+                    <h4>Introduzca nombre: (intente no pasar los 10 caracteres)</h4>
+                    <input type="text" value={this.state.input} onChange={this.actualizarEntrada} style={style_input}/>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+
+ReactDOM.render(<Style_React/>, container_9)
+
+//===========================================================================================
+
+//Utilizar codigo Js en el "render()"
+
+const container_10 = document.getElementById("container_10");
+
+class Mostrar_js_render extends React.Component{
+
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1>9. Usar JS en el render</h1>
+                <p>
+                    Se puede escribir JavaScript directamente en su método "render", antes de la declaración "return", sin necesidad de insertarlo entre llaves. Esto se debe a que aún no está dentro del código JSX. Cuando desee utilizar una variable más adelante en el código JSX dentro de la declaración "return", coloque el nombre de la variable entre llaves.
+                </p>
+                <h3>Codigo</h3>
+                <div style={{flexDirection:"row"}}>
+                    <div style={{flexDirection:"row", width:"70%"}}>
+                        <img src="../sources/ejemplo_js_render_1.png" style={{height:"500px", width:"45%", marginLeft:"auto"}} />
+                        <img src="../sources/ejemplo_js_render_2.png" style={{height:"500px", width:"45%", marginRight:"auto"}} />
+                    </div>
+                    <div style={{width:"30%", justifyContent:"flex-start"}}>
+                        Resultado
+                        <Chat_bot/>
+                    </div>
+                </div>
+                <p>
+                    Este ejemplo se usa  JS para elegir una respuesta al azar de la lista y renderizarla, ademas, se verifica que halla algun valor en el "input", para dar una respuesta
+                </p>
+            </div>
+        );
+    }
+}
+
+
+class Chat_bot extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            input:"",
+            randomPosition:""
+        }
+        //this.new_input = this.new_input.bind(this);
+        //this.new_answer = this.new_answer.bind(this);
+    }
+    /*
+    new_input(event){
+        this.setState({
+            input: event.target.value
+        });
+    }
+    new_answer(){
+        if(this.state.input){
+            this.setState({
+                input: "",
+                randomPosition: Math.floor(Math.random()*20)
+            })
+        }
+    }
+    */
+    new_input = (event) => {
+        this.setState({
+            input: event.target.value
+        })
+    }
+    new_answer = () =>{
+        if(this.state.input){
+            this.setState({
+                randomPosition:Math.floor(Math.random()*20),
+                input: ""
+            })
+        }
+    }
+    
+
+    render(){
+        const possibleAnswers = [
+            'It is certain',
+            'It is decidedly so',
+            'Without a doubt',
+            'Yes, definitely',
+            'You may rely on it',
+            'As I see it, yes',
+            'Outlook good',
+            'Yes',
+            'Signs point to yes',
+            'Reply hazy try again',
+            'Ask again later',
+            'Better not tell you now',
+            'Cannot predict now',
+            'Concentrate and ask again',
+            "Don't count on it",
+            'My reply is no',
+            'My sources say no',
+            'Most likely',
+            'Outlook not so good',
+            'Very doubtful'
+        ];
+        const answer = possibleAnswers[this.state.randomPosition]
+
+        return(
+            <div>
+                <input type="text" value={this.state.input} onChange={this.new_input}/>
+                <button onClick={this.new_answer}>Enviar</button>
+                <h3>respuesta: {answer}</h3>
+            </div>
+            
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_js_render/>,container_10);
+
+//========================================================================================
+
+//Renderizar con condicional (If/Else)
+
+const container_11 = document.getElementById('container_11');
+
+class Mostra_con_ifelse extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1>10. Renderizar con condicional (If/Else)</h1>
+                <p>
+                    Otra aplicación del uso de JavaScript para controlar la vista renderizada es vincular los elementos que se renderizan a una condición. Cuando la condición es verdadera, se representa una vista. Cuando es falso, es una visión diferente. Puede hacer esto con una if/elsedeclaración estándar en el render()método de un componente de React.
+                </p>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div>
+                        <h3>Codigo</h3>
+                        <img src="../sources/ejemplo_render_conditional_1.png"  style={{height:"150px", width:"100%"}} />
+                        <img src="../sources/ejemplo_render_conditional_2.png" style={{height:"300px", width:"100%"}} />
+                    </div>
+                    <div>
+                        <h3>Resultado</h3>
+                        <Render_ifelse/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+class Render_ifelse extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            display: true
+        }
+        this.toggleDisplay = this.toggleDisplay.bind(this);
+    }
+
+    toggleDisplay() {
+        this.setState((state) => ({
+            display: !state.display
+        }));
+    }
+
+        render() {
+            // Change code below this line
+            if(this.state.display){
+            return (
+                <div>
+                    <button onClick={this.toggleDisplay}>Toggle Display</button>
+                    <h1>Displayed!</h1>
+                </div>
+            );
+            }else{
+                return (
+                <div>
+                    <button onClick={this.toggleDisplay}>Toggle Display</button>
+                </div>
+            );
+            /*
+            return (
+                <div>
+                    <button onClick={this.toggleDisplay}>Toggle Display</button>
+                    { this.state.display && <h1>Displayed!</h1>}
+                </div>
+            );
+            */
+            }
+    }
+}
+
+
+ReactDOM.render(<Mostra_con_ifelse/>, container_11);
+
+
+//======================================================================================
+
+const container_11_1 = document.getElementById('container_11_1');
+
+
+class Mostra_condicional_conciso extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <div style={{backgroundColor:"#A8D1E8"}}>
+                    <h2>10.1  Renderizar con condicional (&&)</h2>
+                    <p>
+                        Hay una forma más concisa de lograr el mismo resultado del "if/else". Imagine que está rastreando varias condiciones en un componente y desea que se representen diferentes elementos dependiendo de cada una de estas condiciones. Si escribe muchas declaraciones "if/else" para devolver UI ligeramente diferentes, puede repetir el código, lo que deja margen de error. En su lugar, puede utilizar el operador lógico "&&" para realizar la lógica condicional de una forma más concisa. Esto es posible porque desea verificar si una condición es "true" y, si lo es, devolver algún marcador (etiqueta HTML)
+                    </p>
+                </div>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div style={{width:"50%"}}>
+                        <h3>Condicional (&&)</h3>
+                        <img src="../sources/render_condicional_&&.png" style={{height:"auto", width:"100%"}}/>
+                    </div>
+                    <div style={{width:"50%"}}>
+                        <h3>Condicional if/else</h3>
+                        <img src="../sources/ejemplo_render_conditional_2.png" style={{height:"auto", width:"100%"}} />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Mostra_condicional_conciso/>, container_11_1);
+
+//=========================================================================================
+
+// Renderizar condicional con "OPERADOR TERNARIO"
+const container_11_2 = document.getElementById('container_11_2');
+
+const style_input = {
+    margin:"5px",
+    with: "250px",
+    backgroundColor:"#C8C8C8",
+    borderRadius:"10px",
+    padding:"0 5px"
+}
+
+class Mostrar_renderizado_ternario extends React.Component{
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <div style={{backgroundColor:"#55F9F9"}}>
+                    <h1>10.2 Renderizar con "OPERADOR TERNARIO"</h1>
+                    <p>
+                        El operador <strong>ternario</strong> se utiliza a menudo como atajo para declaraciones "if/else" en JavaScript. No son tan sólidas (grandes) como las declaraciones "if/else" tradicionales, pero son muy populares entre los desarrolladores de React. Una razón para esto es que, debido a cómo se compila JSX, las declaraciones "if/else" no se pueden insertar directamente en el código JSX, se deben declarar fuera del return, en cambio, el operador ternario si podria utilizarse dentro de JSX.
+                    </p>
+                </div>
+                <div style={{flexDirection:"column"}}>
+                    <div>
+                        <h3>Codigo</h3>
+                        <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                            <img src="../sources/render_ternario_1.png" style={{width:"30%"}}/>
+                            <img src="../sources/render_ternario_2.png"  style={{width:"70%"}}/>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Resultado</h3>
+                        <Render_ternario/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class Render_ternario extends React.Component{
+    constructor(props){
+        super(props)
+        this.state ={
+            input:"",
+            userAge:""
+        }
+        this.submit = this.submit.bind(this);
+        this.hadleChange = this.hadleChange.bind(this);
+    }
+
+    hadleChange(event){
+        this.setState({
+            input: event.target.value,
+            userAge:""
+        });
+    }
+
+    submit(){
+        this.setState((state)=>({
+            userAge: state.input
+        })); 
+    }
+
+    render(){
+        const buttonOne = <button onClick={this.submit}>Submit</button>
+        const buttonTwo = <button style={{backgroundColor:"green"}}>Puedes pasar</button>
+        const buttonThree = <button style={{backgroundColor:"red"}}>No Puedes pasar</button>
+        return(
+            <div >
+                <h4>Ingrese su edad</h4>
+                <div style={{flexDirection:"row"}}>
+                    <input type="number" value={this.state.input} onChange={this.hadleChange} style={style_input}/>
+                    {
+                        (this.state.userAge === "") ? buttonOne : ( this.state.userAge >=18  &&  this.state.userAge <= 105 ) ? buttonTwo : buttonThree
+                    }
+                </div>
+            </div>
+        );
+    }
+    
+}
+
+ReactDOM.render(<Mostrar_renderizado_ternario/>,container_11_2)
+
+//==============================================================================================================================
+//Renderizar elementos segun o utilizando sus accesorios
+let style_imp = {
+    fontWeight:"bolder",
+    fontStyle:"italic"
+}
+
+const container_12 = document.getElementById("container_12");
+
+class Mostrar_renderizar_accesorios extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        return(
+            <div style={{ width:"80%", margin:"auto"}}>
+                <h1 style={style_imp}>11. Renderizar elementos segun o utilizando sus accesorios</h1>
+                <ul>
+                    <li>
+                        <p>
+                            Se ha visto cómo usar <span style={style_imp}>"if/else"</span> , <span style={style_imp}>&&</span> y el <span style={style_imp}>operador ternario</span> ( condition ? expressionIfTrue : expressionIfFalse) para tomar decisiones condicionales sobre qué renderizar y cuándo. Sin embargo, queda un tema importante por discutir que le permite combinar cualquiera o todos estos conceptos con otra característica poderosa de React: <span style={style_imp}>los accesorios.</span> 
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            El uso de accesorios para renderizar código condicionalmente es muy común entre los desarrolladores de React; es decir, utilizan el valor de un accesorio determinado para tomar decisiones automáticamente sobre qué renderizar.
+                        </p>
+                    </li>
+                </ul>
+                <h3>Codigo</h3>
+                <section style={{display:"flex", flexDirection:"row", alignItems:"flex-start"}}>
+                    <div style={{width:"70%", alignItems:"flex-start"}}>
+                        <img src="../sources/renderizar_segun_accesorios_1.png" style={{height:"400px", width:"auto"}} />
+                        <img src="../sources/renderizar_segun_accesorios_2.png" style={{height:"400px", width:"auto"}}/>
+                    </div>
+                    <div style={{width:"30%"}}>
+                        <h4>Resultado</h4>
+                        <Juego_dado/>
+                    </div>
+                </section>
+            </div>
+        );
+    }
+}
+
+
+class Juego_dado extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            contador: 1
+        }
+    }
+
+    aumentarContador = ()=>{
+        this.setState((state)=>({
+            contador: state.contador + 1
+        }));
+    };
+
+    render(){
+        let caras = Math.floor(Math.random()*6)
+
+        return(
+            <div id="juego_dado">
+                <div>
+                    <h2>Simulador de dado</h2>
+                    <h5>(Si sacas MAS de 3 Ganas)</h5>
+                    <p> turno numero:{ this.state.contador}</p>
+                </div>
+                <div>
+                    <button onClick={this.aumentarContador}>Jugar</button>
+                    <Result lanzamiento={caras}/>
+                </div>                
+            </div>
+        );
+    }
+}
+
+
+class Result extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        let style_number = {
+            0: {color:"yellow"},
+            1: {color:"blue"},
+            2: {color:"red"},
+            3: {color:"purple"},
+            4: {color:"green"},
+            5: {color:"brown"}
+        }
+        return(
+            <div>
+                <h2>
+                    {
+                        (this.props.lanzamiento+1 > 3)? "Ganaste": "Perdiste"
+                    }
+                </h2>
+                <h2 style={style_number[this.props.lanzamiento]}>{this.props.lanzamiento + 1}</h2>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Mostrar_renderizar_accesorios/>, container_12)
+
+
+//=======================================================================================================
+// Representar elementos dinamicamente (con .map())
+
+const container_13 = document.getElementById("container_13") 
+
+const style_texarea ={
+    with:"350px",
+    height:"100px",
+    margin:"5px",
+    padding:"6px",
+    borderRadius:"20px",
+    border:"2px solid black"
+}
+
+class Mostrar_dinamico_map extends React.Component{
+    
+
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1>12. Renderizar "n" numero de elementos (con .map())</h1>
+                <p>
+                    La representación condicional es útil, pero es posible que necesite que sus componentes representen una cantidad desconocida de elementos. A menudo, en la programación reactiva, un programador no tiene forma de saber cuál es el estado de una aplicación hasta el tiempo de ejecución, porque mucho depende de la interacción del usuario con ese programa. Los programadores deben escribir su código para manejar correctamente ese estado desconocido con anticipación. El uso <span style={style_imp}>Array.map()</span> en React ilustra este concepto.
+                </p>
+                <p>
+                    Por ejemplo, crea una aplicación sencilla de "Lista de tareas pendientes". Como programador, no tienes forma de saber cuántos elementos puede tener un usuario en su lista. Debe configurar su componente para representar dinámicamente la cantidad correcta de elementos de la lista mucho antes de que alguien que use el programa decida que hoy es el día de lavar la ropa.
+                </p>
+                <p style={{fontSize:"1.3rem",fontWeight:"bolder", backgroundColor:"rgb(237,26,50,0.7)"}}>
+                    Cada elemento hermano que se hace con map() (u otro metodo), debe tener un accesorio "key" que lo identifique de los demas elementos hermanos. <br />
+                    suele ser el valor del mismo item, algo, unico <br />
+                    Evitar colocar el "indice" como "key"
+                </p>
+                <h3>Codigo</h3>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div>
+                        <img src="../sources/renderizar_con_map_1.png" style={{height:"400px", width:"auto"}}/>
+                        <img src="../sources/renderizar_con_map_2.png" style={{height:"400px", width:"auto"}}/>
+                    </div>
+                    <div style={{justifyContent:"center"}}>
+                        <h3>Resultado</h3>
+                        <Lista_tareas/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+class Lista_tareas extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            input:"",
+            tareas:[]
+        }
+    }
+
+    actualizarInput = (event)=>{
+        this.setState({
+            input: event.target.value
+        })
+    }
+
+    mostrarLista= ()=>{
+        let lista_input = this.state.input.split(",");
+        this.setState(({
+            tareas: lista_input,
+            input:""
+        }))
+    }
+
+    render(){
+        let itemsLista = this.state.tareas.map((item) => {
+            return <li>{item}</li>
+        })
+
+        return(
+            <div>
+                <h2 style={{margin:"0px auto", color:"green"}}>Cree una lista de Quehaceres</h2>
+                <p style={{marginTop:"0px"}}>(Separe las tareas por comas)</p>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div>
+                        <textarea  
+                        style={style_texarea} 
+                        value={this.state.input} 
+                        onChange={this.actualizarInput}></textarea>
+
+                        <button onClick={this.mostrarLista}>Crear lista</button>
+                    </div>
+                    <ul>
+                        {itemsLista}
+                    </ul>
+                </div>
+            </div>
+        );
+    }
+
+}
+
+ReactDOM.render(<Mostrar_dinamico_map/>,container_13);
+
+
 
 
 
