@@ -14,6 +14,10 @@ class Start_state extends React.Component{
                     Este Archivo se seguira estudiando los componenets de React, pero ahora <br />
                     Seran <strong>Dinamicos</strong> (se utilizara ES6)
                 </p>
+                <p>
+                    <strong>Atributos de etiquetas en react</strong>
+                </p>
+                <img src="../sources/atributosEtiquetasReact.png" alt="atributosEtiquetasReact" />
             </>
         );
     }
@@ -1542,11 +1546,6 @@ class Mostrar_dinamico_map extends React.Component{
                 <p>
                     Por ejemplo, crea una aplicación sencilla de "Lista de tareas pendientes". Como programador, no tienes forma de saber cuántos elementos puede tener un usuario en su lista. Debe configurar su componente para representar dinámicamente la cantidad correcta de elementos de la lista mucho antes de que alguien que use el programa decida que hoy es el día de lavar la ropa.
                 </p>
-                <p style={{fontSize:"1.3rem",fontWeight:"bolder", backgroundColor:"rgb(237,26,50,0.7)"}}>
-                    Cada elemento hermano que se hace con map() (u otro metodo), debe tener un accesorio "key" que lo identifique de los demas elementos hermanos. <br />
-                    suele ser el valor del mismo item, algo, unico <br />
-                    Evitar colocar el "indice" como "key"
-                </p>
                 <h3>Codigo</h3>
                 <div style={{flexDirection:"row", alignItems:"flex-start"}}>
                     <div>
@@ -1558,6 +1557,17 @@ class Mostrar_dinamico_map extends React.Component{
                         <Lista_tareas/>
                     </div>
                 </div>
+                <ul style={{fontSize:"1.3rem",fontWeight:"bolder", backgroundColor:"rgb(237,26,50,0.7)"}}>
+                    <li>
+                        Cada elemento hermano que se hace con map() (u otro metodo), deberia tener un accesorio "key" que lo identifique de los demas elementos hermanos  (buena practica).
+                    </li>
+                    <li>
+                        Para la "key" se suele colocar un valor que haga referencia al valor del mismo item o algo unico
+                    </li>
+                    <li>
+                        Evitar colocar el "indice o posicion" del elemento como "key"
+                    </li>
+                </ul>
             </div>
         );
     }
@@ -1589,7 +1599,7 @@ class Lista_tareas extends React.Component{
 
     render(){
         let itemsLista = this.state.tareas.map((item) => {
-            return <li>{item}</li>
+            return <li key={item}>{item}</li>
         })
 
         return(
@@ -1617,7 +1627,87 @@ class Lista_tareas extends React.Component{
 
 ReactDOM.render(<Mostrar_dinamico_map/>,container_13);
 
+//=======================================================================================================
+//Usar filter() para renderizar "ciertos" elementos
 
+const container_14 = document.getElementById("container_14");
+
+class Mostrar_render_filtaer extends React.Component{
+    render(){
+        return(
+            <div style={{width:"80%", margin:"auto"}}>
+                <h1>13. Usar filter() para renderizar "ciertos" elementos</h1>
+                <p>
+                    El mapmétodo de matriz es una herramienta poderosa que utilizará con frecuencia cuando trabaje con React. Otro método relacionado mapes filter, que filtra el contenido de una matriz según una condición y luego devuelve una nueva matriz. Por ejemplo, si tiene una serie de usuarios que tienen una propiedad onlineque se puede establecer en trueo false, puede filtrar solo aquellos usuarios que están en línea escribiendo:
+                </p>
+                <h3>Codigo</h3>
+                <div style={{flexDirection:"row", alignItems:"flex-start"}}>
+                    <div style={{flexDirection:"column", alignItems:"flex-start"}}>
+                        <img src="../sources/filter_render_1.png"  style={{height:"400px", width:"auto"}}/>
+                        <img src="../sources/filter_render_2.png"  style={{height:"200px", width:"auto"}}/>
+
+                    </div>
+                    <div>
+                        <Filter_renderizar/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+
+class Filter_renderizar extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            users: [
+                {
+                    username: 'Jeff',
+                    online: true
+                },
+                {
+                    username: 'Alan',
+                    online: false
+                },
+                {
+                    username: 'Mary',
+                    online: true
+                },
+                {
+                    username: 'Jim',
+                    online: false
+                },
+                {
+                    username: 'Sara',
+                    online: true
+                },
+                {
+                    username: 'Laura',
+                    online: true
+                }
+            ]
+        }
+    }
+
+    render(){
+        let usuariosOnline = this.state.users.filter((item)=>{return item.online},[])
+        let usuariosRender = usuariosOnline.map((item)=>{
+            return <li key={item.username}>{item.username}</li>
+        })
+        
+        return(
+            <>
+                <h1>Usuarios en linea</h1>
+                <ul>{usuariosRender}</ul>
+            </>
+        );
+    }
+}
+
+
+ReactDOM.render(<Mostrar_render_filtaer/>,container_14);
 
 
 
