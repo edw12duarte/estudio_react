@@ -1,0 +1,25 @@
+.contenedor_todolist{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 600px;
+    min-height: 500px;
+    background-color: #d0d0d5;
+    padding: 25px;
+    margin: 10px;
+    border-radius: 30px;
+}
+
+h1{
+    color: #1b1b32;
+    font-size: 1.5rem;
+    font-family: Roboto, sans-serif;
+    margin: 20px 0;
+}
+
+.tareas_lista_contenedor{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}

@@ -1,0 +1,47 @@
+.tarea_contenedor{
+    width: 500px;
+    min-height: 65px;
+    background-color: #1b1b32;
+    margin: 5px 0;
+    padding: 8px 15px 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 7px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.tarea_texto{
+    width: 100%;
+    height: 100%;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    overflow-wrap: anywhere;
+}
+
+.tarea_icono_x{
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+}
+
+.tarea_contenedor.tarea_completada{
+    background-color: #5a01a7 !important;
+    text-decoration: line-through;
+}
+
+/*Degrade de colore en las tareas*/
+
+.tarea_contenedor:nth-child(3n+1){
+    background-color: rgb(51, 51, 2);
+}
+
+.tarea_contenedor:nth-child(3n+2){
+    background-color: rgb(5, 56, 3);
+}
+
+.tarea_contenedor:nth-child(3n+3){
+    background-color: rgb(3, 63, 62);
+}

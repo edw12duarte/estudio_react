@@ -20,7 +20,7 @@ function Calculadora(){
     }
 
     const calcularResultado = ()=>{
-        let patron = /^[*/.]+|\W{2,}|(\W)$/g // el patron busca ==> comienza por (*/.) o tiene 2 simbolos seguidos o termina por un simbolo
+        let patron = /^[*/.]+|\W{2,}|(\W)$|[a-zA-Z]+/g // el patron busca ==> comienza por (*/.) o tiene 2 simbolos seguidos o termina por un simbolo o tiene letras
 
         if(input.length > 0 && !(patron.test(input))){
             setInput(evaluate(input));

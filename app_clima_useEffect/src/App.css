@@ -1,0 +1,27 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.html, body{
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #6046df;
+  font-family: Lato, sans-serif;
+}
+
+
+.contenedor-titulo{
+  height: 100px;
+  margin: 10px;
+  .logo{
+    max-height: 100%;
+  }
+}
+
+

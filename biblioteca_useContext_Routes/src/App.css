@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lexend+Deca&family=Lumanosimo&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.App{
+    width: 100vw;
+    min-height: 100vh;
+    line-height: 1.5em;
+    font-family: 'Lumanosimo', cursive, sans-serif, fantasy, Georgia, 'Times New Roman', Times, serif;
+    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+}
